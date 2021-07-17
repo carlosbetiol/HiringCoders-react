@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './styled';
+import { useHistory } from 'react-router-dom';
 
 export default function Repositories() {
+    const history = useHistory();
     const [ repositories, setRepositories ] = useState([]);
     useEffect(() => {
         let repositoriesName = localStorage.getItem('repositoriesName');
-        repositoriesName = JSON.parse(repositoriesName);
-        setRepositories(repositoriesName);
-        localStorage.clear();
+        if(repositoriesName != null) {
+            repositoriesName = JSON.parse(repositoriesName);
+            setRepositories(repositoriesName);
+            localStorage.clear();
+        } else {
+            history.push("/");
+        }
+
     }, []); // parametro vazio pq eh para fazer quando ja entra na pagina, sem variavel monitorada
 
     return (
@@ -21,6 +28,7 @@ export default function Repositories() {
             })}
             
         </S.List>
+        <S.LinkHome to="/">Voltar</S.LinkHome>
         </S.Container>
     )
 }
